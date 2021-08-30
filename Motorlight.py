@@ -542,158 +542,37 @@ def ActiveDays(current_date):
     return datee.month, datee.year, num_days
 
 def GetVendor():
-    filename = "targets"
-    if(os.path.exists(filename)):
-        infile = open(filename, 'rb')
-        new_dict = pickle.load(infile)
-        vendedores = new_dict['Vendedor']
-        return  vendedores
+    lists = database.get('Target/','')
+    if(len(lists['Recaudo']) > len(lists['Venta'])):
+        vendedores = lists['Recaudo']
     else:
-        print("error")
-        return  "Sin referencia"
+        vendedores = lists['Venta']
+    print(list(vendedores.keys()))
+    return  list(vendedores.keys())
 
 def SelectionBonus():
    selection = "You selected the option " + str(var.get())
    print(selection)
 
-def SelectedVendor():
-    string_variable.get()
+def SelectedVendor(opt):
+    global val
+    val = string_variable.get()
 
-def GetBonus(my_frame1, canvas):
-    if (check.get() == 1):
-        msg = "venta"
-        filename = string_variable.get() + " IV"
-    else:
-        msg = "recaudo"
-        filename = string_variable.get() + " IR"
-    if(os.path.exists(filename)):
-        infile = open(filename, 'rb')
-        new_dict = pickle.load(infile)
-        tipo = new_dict['Tipo']
-        var.set(tipo)
-        SalesBonusInsert(my_frame1, canvas)
-        if(tipo == 1):
-            Incentivo = new_dict['Incentivo']
-            entry_text_0 = StringVar()
-            entry_text_1 = StringVar()
-            entry_text_2 = StringVar()
-            entry_text_3 = StringVar()
-            entry_text_4 = StringVar()
-            entry_text_5 = StringVar()
-            zero_bonus.config(textvariable=entry_text_0)
-            entry_text_0.set(Incentivo[0])
-            first_bonus.config(textvariable=entry_text_1)
-            entry_text_1.set(Incentivo[1])
-            second_bonus.config(textvariable=entry_text_2)
-            entry_text_2.set(Incentivo[2])
-            third_bonus.config(textvariable=entry_text_3)
-            entry_text_3.set(Incentivo[3])
-            fourth_bonus.config(textvariable=entry_text_4)
-            entry_text_4.set(Incentivo[4])
-            fifth_bonus.config(textvariable=entry_text_5)
-            entry_text_5.set(Incentivo[5])
-            RangoMin = new_dict['RangoMin']
-            min_text_0 = StringVar()
-            min_text_1 = StringVar()
-            min_text_2 = StringVar()
-            min_text_3 = StringVar()
-            min_text_4 = StringVar()
-            min0.config(textvariable=min_text_0)
-            min_text_0.set(RangoMin[0])
-            min1.config(textvariable=min_text_1)
-            min_text_1.set(RangoMin[1])
-            min2.config(textvariable=min_text_2)
-            min_text_2.set(RangoMin[2])
-            min3.config(textvariable=min_text_3)
-            min_text_3.set(RangoMin[3])
-            min4.config(textvariable=min_text_4)
-            min_text_4.set(RangoMin[4])
-            RangoMax = new_dict['RangoMax']
-            max_text_0 = StringVar()
-            max_text_1 = StringVar()
-            max_text_2 = StringVar()
-            max_text_3 = StringVar()
-            max_text_4 = StringVar()
-            max_text_5 = StringVar()
-            max0.config(textvariable=max_text_0)
-            max_text_0.set(RangoMax[0])
-            max1.config(textvariable=max_text_1)
-            max_text_1.set(RangoMax[1])
-            max2.config(textvariable=max_text_2)
-            max_text_2.set(RangoMax[2])
-            max3.config(textvariable=max_text_3)
-            max_text_3.set(RangoMax[3])
-            max4.config(textvariable=max_text_4)
-            max_text_4.set(RangoMax[4])
-            max5.config(textvariable=max_text_5)
-            max_text_5.set(RangoMax[5])
-        else:
-            Incentivo = new_dict['Incentivo']
-            entry_text_0 = StringVar()
-            entry_text_1 = StringVar()
-            entry_text_2 = StringVar()
-            entry_text_3 = StringVar()
-            zero_bonus.config(textvariable=entry_text_0)
-            entry_text_0.set(Incentivo[0])
-            first_bonus.config(textvariable=entry_text_1)
-            entry_text_1.set(Incentivo[1])
-            second_bonus.config(textvariable=entry_text_2)
-            entry_text_2.set(Incentivo[2])
-            third_bonus.config(textvariable=entry_text_3)
-            entry_text_3.set(Incentivo[3])
-            RangoMin = new_dict['RangoMin']
-            min_text_0 = StringVar()
-            min_text_1 = StringVar()
-            min_text_2 = StringVar()
-            min0.config(textvariable=min_text_0)
-            min_text_0.set(RangoMin[0])
-            min1.config(textvariable=min_text_1)
-            min_text_1.set(RangoMin[1])
-            min2.config(textvariable=min_text_2)
-            min_text_2.set(RangoMin[2])
-            RangoMax = new_dict['RangoMax']
-            max_text_0 = StringVar()
-            max_text_1 = StringVar()
-            max_text_2 = StringVar()
-            max_text_3 = StringVar()
-            max0.config(textvariable=max_text_0)
-            max_text_0.set(RangoMax[0])
-            max1.config(textvariable=max_text_1)
-            max_text_1.set(RangoMax[1])
-            max2.config(textvariable=max_text_2)
-            max_text_2.set(RangoMax[2])
-            max3.config(textvariable=max_text_3)
-            max_text_3.set(RangoMax[3])
-        infile.close()
-    else:
-        messagebox.showerror("Sin referencia",
-                             "El vendedor "+string_variable.get()+" no tiene referencia de incentivo de "+msg)
+def GetBonus():
+    global val, bonusOne, bonusTwo, bonusThree, bonusFour, firstRange, string_variable
+    bonus = database.get('Bonus/', str(string_variable.get()))
+    if (bonus != 'none'):
+        data = str(bonus).split(',')
+        firstRange.insert(0,data[0])
+        bonusOne.insert(0,data[1])
+        bonusTwo.insert(0,data[2])
+        bonusThree.insert(0,data[3])
+        bonusFour.insert(0,data[4])
 
 def SaveBonus():
-    if(ValidateEmpty()):
-        if(check.get() == 1):
-            filename = string_variable.get() + " IV"
-        else:
-            filename = string_variable.get() + " IR"
-        outfile = open(filename, 'wb')
-        if(var.get() == 1):
-            incentivo = [zero_bonus.get(), first_bonus.get(), second_bonus.get(), third_bonus.get(), fourth_bonus.get(), fifth_bonus.get()]
-            rangoMinimo = [min0.get(), min1.get(), min2.get(), min3.get(), min4.get(), "null"]
-            rangoMaximo = [max0.get(), max1.get(), max2.get(), max3.get(), max4.get(), max5.get()]
-            tipo = var.get()
-        else:
-            incentivo = [zero_bonus.get(), first_bonus.get(), second_bonus.get(), third_bonus.get()]
-            rangoMinimo = [min0.get(), min1.get(), min2.get(), "null"]
-            rangoMaximo = [max0.get(), max1.get(), max2.get(), max3.get()]
-            tipo = var.get()
-        vector = {'Incentivo': incentivo, 'RangoMin':rangoMinimo, 'RangoMax':rangoMaximo, "Tipo":tipo}
-        print(vector)
-        pickle.dump(vector, outfile)
-        outfile.close()
-    else:
-        messagebox.showerror("Datos invalidos",
-                             "Debe llenar todas las casillas")
-
+    global val, bonusOne, bonusTwo, bonusThree, bonusFour, firstRange, string_variable
+    database.put('Bonus/', str(string_variable.get()), str(firstRange.get())+','+str(bonusOne.get())+','+str(bonusTwo.get())+','+str(bonusThree.get())+','+str(bonusFour.get()))
+    
 def ValidateEmpty():
     if (var.get() == 1):
         if(min0.get() != "" and min1.get() != "" and min2.get() != "" and min3.get() != "" and min4.get() != ""
@@ -714,41 +593,35 @@ def ValidateEmpty():
 def RangesGui():
     top = Toplevel()
     top.title("MotorLight - Rangos de incentivos por vendedor")
-    top.geometry(str(int(sw*0.3))+"x"+str(int(sh*0.40)))
+    top.geometry(str(int(sw*0.4))+"x"+str(int(sh*0.40)))
     top.resizable(0, 0)
     my_notebook = ttk.Notebook(top)
-    my_notebook.pack(pady = 15)
-    my_frame1 = Frame(my_notebook, width = 500, height = 500)
+    my_notebook.pack(pady = 15, fill='both', expand = 1)
+    my_frame1 = Frame(my_notebook, width = int(sw*0.3), height = int(sh*0.40))
     my_frame1.pack(fill='both', expand = 1)
-    my_notebook.add(my_frame1, text = 'Incentivos de Venta/Recaudo')
+    my_notebook.add(my_frame1, text = 'Incentivos de Vendedores')
     #FRAME VENTAS GUI
 
     OPTIONS = GetVendor()
     global string_variable, var, downloadBonus
     string_variable = StringVar(top)
     var = IntVar()
-    string_variable.set(OPTIONS[0])  # default value
-    intype = LabelFrame(my_frame1, text = "Tipo de incentivo")
-    intype.grid(row = 0, column = 0, rowspan = 2, pady=int(sh*0.005787), padx=int(sw*0.003255))
-    percentage_type = Radiobutton(intype, text = "Por porcentaje (%)", variable=var, value=1, command = SelectionBonus)
-    percentage_type.pack(anchor = W )
-    sales_type = Radiobutton(intype, text = "Por venta ($)", variable=var, value=2, command = SelectionBonus)
-    sales_type.pack(anchor = W )
+    string_variable.set(OPTIONS[1])  # default value
     staticLabel = Label(my_frame1, text = "Seleccione vendedor")
     staticLabel.grid(row = 0, column = 1)
     w = OptionMenu(my_frame1, string_variable, *OPTIONS, command = SelectedVendor)
     w.grid(row = 1, column = 1, padx=int(sw*0.003255))
     w.config(width = 28, font=('Helvetica',7), anchor = W)
     actionType = LabelFrame(my_frame1, text ="Seleccione acción")
-    actionType.grid(row = 0, column = 2, rowspan = 2)
+    actionType.grid(row = 0, column = 2, rowspan = 2, columnspan=4)
     #IMAGE
 
-    canvas = Canvas(my_frame1, width=int(sw * 0.1953125), height=int(sh * 0.3472222))
-    canvas.grid(row = 3, column = 0, columnspan = 3, sticky="nsew")
+    canvas = Canvas(my_frame1, width=int(sw * 0.2), height=int(sh * 0.35))
+    canvas.grid(row = 3, column = 0, columnspan = 6, sticky="nsew")
     img = Image.open("logo.png")  # PIL solution
-    img = img.resize((int(sw * 0.26), int(sh * 0.2)), Image.ANTIALIAS)  # The (x, y) is (height, width)
+    img = img.resize((int(sw * 0.15), int(sh * 0.1)), Image.ANTIALIAS)  # The (x, y) is (height, width)
     img = ImageTk.PhotoImage(img)  # convert to PhotoImage
-    canvas.create_image(20, 20, anchor=NW, image=img)
+    canvas.create_image(5, 5, anchor=NW, image=img)
 
     #ACTION FRAME
     insertBonus = Button(actionType, text = "Ingresar incentivos",  command = lambda : SalesBonusInsert(my_frame1, canvas))
@@ -759,282 +632,106 @@ def RangesGui():
     top.mainloop()
 
 def SalesBonusInsert(my_frame1, canvas):
-    global zero_bonus, first_bonus, second_bonus, third_bonus, fourth_bonus, fifth_bonus
-    global min0, min1, min2, min3, min4, min5
-    global max0, max1, max2, max3, max4, max5
+    global bonusOne, bonusTwo, bonusThree, bonusFour, firstRange
     global collectionBonus, saleBonus, check
-    if(var.get() == 0):
-        messagebox.showerror("Ocurrió un error",
-                             "Debe seleccionar un tipo de incentivo")
-    else:
-        if(var.get() == 1):
-            text1 = "Desde (%)"
-            text2 = "Hasta (%)"
-        else:
-            text1 = "Desde ($)"
-            text2 = "Hasta ($)"
-        canvas.grid_forget()
-        downloadBonus.config(state = NORMAL)
-        # SALES FORM FRAME
-        sales_form = LabelFrame(my_frame1, text="Formulario de ingreso de incentivos - Ventas")
-        sales_form.grid(row = 3, column = 0, columnspan = 3, sticky="nsew")
-        sales_form.config(width = 600)
-        #BONUS
-        bonusTitle = Label(sales_form, text ="Incentivo (%)")
-        bonusTitle.grid(row = 0, column = 0)
-        zero_bonus = Entry(sales_form, justify=RIGHT)
-        zero_bonus.grid(row = 1, column = 0)
-        first_bonus = Entry(sales_form, justify=RIGHT)
-        first_bonus.grid(row = 2, column = 0)
-        second_bonus = Entry(sales_form, justify=RIGHT)
-        second_bonus.grid(row = 3, column = 0)
-        third_bonus = Entry(sales_form, justify=RIGHT)
-        third_bonus.grid(row = 4, column = 0)
-        if (var.get() == 1):
-            fourth_bonus = Entry(sales_form, justify=RIGHT)
-            fourth_bonus.grid(row = 5, column = 0)
-            fifth_bonus = Entry(sales_form, justify=RIGHT)
-            fifth_bonus.grid(row = 6, column = 0)
-        #RANGES TITLE
-        range_title = Label(sales_form, text = "Rangos")
-        range_title.grid(row = 0, column = 1)
-        zeroRange = Label(sales_form, text = "Rango 0")
-        zeroRange.grid(row = 1, column = 1)
-        firstRange = Label(sales_form, text = "Rango 1")
-        firstRange.grid(row = 2, column = 1)
-        secondRange = Label(sales_form, text = "Rango 2")
-        secondRange.grid(row = 3, column = 1)
-        thirdRange = Label(sales_form, text = "Rango 3")
-        thirdRange.grid(row = 4, column = 1)
-        if (var.get() == 1):
-            fourthRange = Label(sales_form, text = "Rango 4")
-            fourthRange.grid(row = 5, column = 1)
-            fifthRange = Label(sales_form, text = "Rango 5")
-            fifthRange.grid(row = 6, column = 1)
-        # MIN RANGE
-        min_range_title = Label(sales_form, text = text1)
-        min_range_title.grid(row = 0, column = 2)
-        min0 = Entry(sales_form, justify=RIGHT)
-        min0.grid(row = 1, column = 2)
-        min1 = Entry(sales_form, justify=RIGHT)
-        min1.grid(row = 2, column = 2)
-        min2 = Entry(sales_form, justify=RIGHT)
-        min2.grid(row = 3, column = 2)
-        if (var.get() == 1):
-            min3 = Entry(sales_form, justify=RIGHT)
-            min3.grid(row = 4, column = 2)
-            min4 = Entry(sales_form, justify=RIGHT)
-            min4.grid(row = 5, column = 2)
-            min5 = Label(sales_form, text =">")
-            min5.grid(row = 6, column = 2)
-        else:
-            min3 = Label(sales_form, text =">")
-            min3.grid(row = 4, column = 2)
-        # MAX RANGE
-        max_range_title = Label(sales_form, text = text2)
-        max_range_title.grid(row = 0, column = 3)
-        max0 = Entry(sales_form, justify=RIGHT)
-        max0.grid(row = 1, column = 3)
-        max1 = Entry(sales_form, justify=RIGHT)
-        max1.grid(row = 2, column = 3)
-        max2 = Entry(sales_form, justify=RIGHT)
-        max2.grid(row = 3, column = 3)
-        max3 = Entry(sales_form, justify=RIGHT)
-        max3.grid(row = 4, column = 3)
-        if (var.get() == 1):
-            max4 = Entry(sales_form, justify=RIGHT)
-            max4.grid(row = 5, column = 3)
-            max5 = Entry(sales_form, justify=RIGHT)
-            max5.grid(row = 6, column = 3)
-        saveBonus = Button(my_frame1, text = "Guardar incentivo", command =lambda : SaveBonus())
-        saveBonus.grid(row = 4, column = 0)
-        check = IntVar(my_frame1)
-        saleBonus = Radiobutton(my_frame1, text = "Venta",variable=check, value=1)
-        saleBonus.grid(row = 4, column = 1)
-        collectionBonus = Radiobutton(my_frame1, text ="Recaudo", variable=check, value=2)
-        collectionBonus.grid(row = 4, column = 2)
-        check.set(1)
+    canvas.grid_forget()
+    downloadBonus.config(state = NORMAL)
+    # SALES FORM FRAME
+    sales_form = LabelFrame(my_frame1, text="Estructura de incentivos")
+    sales_form.grid(row = 3, column = 0, columnspan = 3, sticky="nsew")
+    sales_form.config(width = int(sw*0.4))
+    #BONUS
+    bonusTitle = Label(sales_form, text ="")
+    bonusTitle.grid(row = 0, column = 0)
+    premise = Label(sales_form, text = "* PREMISA GENERAL: CUMPLIMIENTO SUPERIOR A: ")
+    premise.grid(row = 1, column = 0, columnspan=5)
+    firstRange = Entry(sales_form, justify=RIGHT, width=8)
+    firstRange.grid(row = 1, column=5)
+    p1 = Label(sales_form, text ="% DEL RECAUDO")
+    p1.grid(row=1, column=6)
+    secondTitle = Label(sales_form, text="        -> UMBRAL DE VENTA $", justify=LEFT)
+    secondTitle.grid(row = 2, column = 0)
+    bonusOne = Entry(sales_form, width=15)
+    bonusOne.grid(row=2, column=1)
+    thirTitle = Label(sales_form, text=" DE PESOS ", justify=LEFT)
+    thirTitle.grid(row = 2, column = 2)
+    title_4 = Label(sales_form, text="--> MAYOR:    ")
+    title_4.grid(row = 3, column = 0)
+    title_4_ = Label(sales_form, text="% DEL RECAUDO")
+    title_4_.grid(row = 3, column = 2)
+    title_5 = Label(sales_form, text="--> MENOR:    ")
+    title_5.grid(row = 4, column = 0)
+    title_5_ = Label(sales_form, text="% DEL RECAUDO")
+    title_5_.grid(row = 4, column = 2)
+    title_6 = Label(sales_form, text="* INCUMPLIMIENTO UMBRAL DE RECUADO            ")
+    title_6.grid(row = 5, column = 0, columnspan=5)
+    title_7 = Label(sales_form, text="--> RECAUDO:  ")
+    title_7.grid(row = 6, column = 0)
+    title_7_ = Label(sales_form, text="%")
+    title_7_.grid(row = 6, column = 2)
+    bonusTwo = Entry(sales_form, width=8)
+    bonusTwo.grid(row=3, column=1)
+    bonusThree = Entry(sales_form, width=8)
+    bonusThree.grid(row=4, column=1)
+    bonusFour = Entry(sales_form, width=8)
+    bonusFour.grid(row=6, column=1)
+    addBonus = Button(sales_form, text='Aprobar', width=20, command=lambda: SaveBonus())
+    addBonus.grid(row=7, column=0, columnspan=6, sticky=NSEW, pady=20, padx=30)
 
-def CalculateBonus(vendedor, meta_venta, venta, meta_recaudo, recaudo, path):
-    filename = vendedor + " IV"
-    print(vendedor)
-    indicator = 0
-    #Incentivos venta
-    if(os.path.exists(filename)):
-        print("File exist")
-        indicator = 1
-        infile = open(filename, 'rb')
-        new_dict = pickle.load(infile)
-        tipo = new_dict['Tipo']
-        Incentivo = new_dict['Incentivo']
-        RangoMin = new_dict['RangoMin']
-        RangoMax = new_dict['RangoMax']
-        valor = venta.replace("$", "").replace(",", "")
-        meta = meta_venta.replace("$", "").replace(",", "")
-        count = 0
-        checkout = False
-        if(meta != 0 and tipo == 1):
-            while(count < 6):
-                if(count < 5):
-                    checkout = Bonus(meta, valor, RangoMin[count], RangoMax[count], tipo)
-                    b = Incentivo[count]
-                    count = count + 1
-                    if (checkout):
-                        count = 10
-                else:
-                    checkout = Bonus(meta, valor, 0, RangoMax[count], tipo)
-                    if(checkout == False):
-                        b = 0
-                    else:
-                        b = Incentivo[count]
-                    count = count +1
-        else:
-            if(tipo == 2):
-                while (count < 4):
-                    if (count < 3):
-                        checkout = Bonus(valor, meta, RangoMin[count], RangoMax[count], tipo)
-                        b = Incentivo[count]
-                        count = count + 1
-                        if (checkout):
-                            count = 10
-                    else:
-                        checkout = Bonus(valor, meta, 0, RangoMax[count], tipo)
-                        if (checkout == False):
-                            b = 0
-                        else:
-                            b = Incentivo[count]
-                        count = count + 1
-                else:
-                    b = 0
-        print("Bonus "+str(b))
-        infile.close()
-        true_path = path+"/"+vendedor+".xlsx"
-        print(true_path)
-        workbook = xlsxwriter.Workbook(true_path)
-        title_format = workbook.add_format({'bold': True, 'bg_color': 'black', 'font_color': 'white', 'border': 1})
-        sub_title_format = workbook.add_format({'bold': True, 'bg_color': 'blue', 'font_color': 'white', 'border': 1})
-        normal_format = workbook.add_format({'bold': True, 'border':1})
-        normal_money_format =  workbook.add_format({'bold': True, 'num_format': '$#,##0', 'border':1})
-        normal_percentage_format = workbook.add_format({'bold': True, 'num_format': '0%', 'border': 1})
-        main_money_format = workbook.add_format({'num_format': '$#,##0', 'bg_color': 'yellow', 'bold': True, 'border': 1})
-        worksheet = workbook.add_worksheet(name="Incentivos")
-        worksheet.set_column('B:B', 40)
-        worksheet.set_column('C:C', 40)
-        worksheet.set_column('D:D', 40)
-        worksheet.set_column('E:E', 40)
-        worksheet.hide_gridlines(2)
-        worksheet.write('B4', 'TOTAL VENTA', title_format)
-        worksheet.write('B5', 'Ejecutivo', sub_title_format)
-        worksheet.write('C5', 'Venta', sub_title_format)
-        worksheet.write('D5', 'Meta', sub_title_format)
-        worksheet.write('E5', '%Cumplimiento', sub_title_format)
-        worksheet.write('B6', vendedor, normal_format)
-        worksheet.write('B7', "Ajuste 1", normal_format)
-        worksheet.write('B8', "Ajuste 2", normal_format)
-        worksheet.write('B9', "Ajuste 3", normal_format)
-        worksheet.write('B10', "Total venta", normal_format)
-        worksheet.write('C6', float(valor), normal_money_format)
-        worksheet.write('C7', 0, normal_money_format)
-        worksheet.write('C8', 0, normal_money_format)
-        worksheet.write('C9', 0, normal_money_format)
-        worksheet.write('C10', '=C6+C7+C8+C9', normal_money_format)
-        worksheet.write('D6', float(meta), normal_money_format)
-        worksheet.write('E6', '=C6/D6', normal_percentage_format)
-        worksheet.write('B12','Comisiones '+str(b)+'%', normal_format)
-        worksheet.write('C12', '=C10*'+str(float(b)/100), main_money_format)
-    #Incentivos Recaudo
-    filename = vendedor + " IR"
-    if (os.path.exists(filename)):
-        print("File exist")
-        infile = open(filename, 'rb')
-        new_dict = pickle.load(infile)
-        tipo = new_dict['Tipo']
-        Incentivo = new_dict['Incentivo']
-        RangoMin = new_dict['RangoMin']
-        RangoMax = new_dict['RangoMax']
-        valor = recaudo.replace("$", "").replace(",", "")
-        meta = meta_recaudo.replace("$", "").replace(",", "")
-        count = 0
-        checkout = False
-        if (meta != 0 and tipo == 1):
-            while (count < 6):
-                if (count < 5):
-                    checkout = Bonus(meta, valor, RangoMin[count], RangoMax[count], tipo)
-                    b = Incentivo[count]
-                    count = count + 1
-                    if (checkout):
-                        count = 10
-                else:
-                    checkout = Bonus(meta, valor, 0, RangoMax[count], tipo)
-                    if (checkout == False):
-                        b = 0
-                    else:
-                        b = Incentivo[count]
-                    count = count + 1
-        else:
-            if (tipo == 2):
-                while (count < 4):
-                    if (count < 3):
-                        checkout = Bonus(valor, meta, RangoMin[count], RangoMax[count], tipo)
-                        b = Incentivo[count]
-                        count = count + 1
-                        if (checkout):
-                            count = 10
-                    else:
-                        checkout = Bonus(valor, meta, 0, RangoMax[count], tipo)
-                        if (checkout == False):
-                            b = 0
-                        else:
-                            b = Incentivo[count]
-                        count = count + 1
-                else:
-                    b = 0
-        print("Bonus " + str(b))
-        infile.close()
-        true_path = path + "/" + vendedor + ".xlsx"
-        if (indicator == 1):
-            pass
-        else:
-            workbook = xlsxwriter.Workbook(true_path)
-            worksheet = workbook.add_worksheet(name="Incentivos")
-            worksheet.hide_gridlines(2)
-            title_format = workbook.add_format({'bold': True, 'bg_color': 'black', 'font_color': 'white', 'border': 1})
-            sub_title_format = workbook.add_format(
-                {'bold': True, 'bg_color': 'blue', 'font_color': 'white', 'border': 1})
-            normal_format = workbook.add_format({'bold': True, 'border': 1})
-            normal_money_format = workbook.add_format({'bold': True, 'num_format': '$#,##0', 'border': 1})
-            normal_percentage_format = workbook.add_format({'bold': True, 'num_format': '0%', 'border': 1})
-            main_money_format = workbook.add_format(
-                {'num_format': '$#,##0', 'bg_color': 'yellow', 'bold': True, 'border': 1})
-            worksheet.set_column('B:B', 40)
-            worksheet.set_column('C:C', 40)
-            worksheet.set_column('D:D', 40)
-            worksheet.set_column('E:E', 40)
-        worksheet.write('B15', 'TOTAL RECAUDO', title_format)
-        worksheet.write('B16', 'Ejecutivo', sub_title_format)
-        worksheet.write('C16', 'Recaudo', sub_title_format)
-        worksheet.write('D16', 'Meta', sub_title_format)
-        worksheet.write('E16', '%Cumplimiento', sub_title_format)
-        worksheet.write('B17', vendedor, normal_format)
-        worksheet.write('B18', "Ajuste 1", normal_format)
-        worksheet.write('B19', "Ajuste 2", normal_format)
-        worksheet.write('B20', "Ajuste 3", normal_format)
-        worksheet.write('B21', "Total venta", normal_format)
-        worksheet.write('C17', float(valor), normal_money_format)
-        worksheet.write('C18', 0, normal_money_format)
-        worksheet.write('C19', 0, normal_money_format)
-        worksheet.write('C20', 0, normal_money_format)
-        worksheet.write('C21', '=C17+C18+C19+C20', normal_money_format)
-        worksheet.write('D17', float(meta), normal_money_format)
-        worksheet.write('E17', '=C17/D17', normal_percentage_format)
-        worksheet.write('B23', 'Comisiones ' + str(b) + '%', normal_format)
-        worksheet.write('C23', '=C21*' + str(float(b) / 100), main_money_format)
-        workbook.close()
-    else:
-        if(indicator == 1):
-            workbook.close()
-        else:
-            pass
+def CalculateBonus():
+    save_path = tkinter.filedialog.asksaveasfile(defaultextension=".xlsx", filetypes=(("Excel", "*.xlsx"),))
+    workbook = xlsxwriter.Workbook(save_path.name)
+    normal_money_format =  workbook.add_format({'bold': True, 'num_format': '$#,##0', 'border':1})
+    normal_format = workbook.add_format({'bold': True, 'border':1})
+    main_money_format = workbook.add_format({'num_format': '$#,##0', 'bg_color': 'yellow', 'bold': True, 'border':1})
+    title_format = workbook.add_format({'bold': True, 'bg_color': 'yellow', 'border':1})
+    percentage_format = workbook.add_format({'num_format': '0%', 'bg_color': '#C2C2C2', 'bold': True, 'border':1})
+    resume_worksheet = workbook.add_worksheet(name="INCENTIVO")
+    resume_worksheet.set_column('A:A', 30)
+    resume_worksheet.set_column('B:B', 8)
+    resume_worksheet.set_column('C:C', 8)
+    resume_worksheet.set_column('D:D', 15)
+    resume_worksheet.set_column('E:E', 15)
+    resume_worksheet.set_column('F:F', 15)
+    resume_worksheet.set_column('G:G', 15)
+    resume_worksheet.set_column('H:H', 8)
+    resume_worksheet.set_column('I:I', 8)
+    resume_worksheet.set_column('J:J', 8)
+    resume_worksheet.write('A1', 'Vendedor', title_format)
+    resume_worksheet.write('B1', 'Registros', title_format)
+    resume_worksheet.write('C1', 'Facturas', title_format)
+    resume_worksheet.write('D1', 'Meta de Venta', title_format)
+    resume_worksheet.write('E1', 'Venta', title_format)
+    resume_worksheet.write('F1', 'Meta de Recaudo', title_format)
+    resume_worksheet.write('G1', 'Recaudo', title_format)
+    resume_worksheet.write('H1', '% Venta', title_format)
+    resume_worksheet.write('I1', '% Recaudo', title_format)
+    resume_worksheet.write('J1', 'Incentivo', title_format)
+    ids = my_tree.get_children()
+    export = []
+    counter = 2
+    for _id in ids:
+        row = my_tree.item(_id)
+        values = row['values']
+        resume_worksheet.write('A'+str(counter), values[0], normal_format)
+        resume_worksheet.write('B'+str(counter), values[1], normal_format)
+        resume_worksheet.write('C'+str(counter), values[2], normal_format)
+        metaVenta = float(str(values[3]).replace('$', '').replace(',', ''))
+        venta = float(str(values[4]).replace('$', '').replace(',', ''))
+        metaRecaudo = float(str(values[5]).replace('$', '').replace(',', ''))
+        recaudo = float(str(values[6]).replace('$', '').replace(',', ''))
+        incentivo = GetVendorBonus(values[0], metaVenta, metaRecaudo, venta, recaudo)
+        print(incentivo)
+        print(metaVenta)
+        resume_worksheet.write('D'+str(counter), metaVenta, normal_money_format)
+        resume_worksheet.write('E'+str(counter), venta, normal_money_format)
+        resume_worksheet.write('F'+str(counter), metaRecaudo, normal_money_format)
+        resume_worksheet.write('G'+str(counter), recaudo, normal_money_format)
+        resume_worksheet.write('H'+str(counter), float(venta/metaVenta), percentage_format)
+        resume_worksheet.write('I'+str(counter), float(recaudo/metaRecaudo), percentage_format)
+        resume_worksheet.write('J'+str(counter), incentivo, main_money_format)
+        counter = counter +1
+    workbook.close()
 
 def Bonus(meta, valor, min, max, tipo):
     min = float(min)/100
@@ -1065,10 +762,29 @@ def Bonus(meta, valor, min, max, tipo):
             return False
 
 def GenerateBonus():
-    path = tkinter.filedialog.askdirectory()
-    for child in my_tree.get_children():
-        param = my_tree.item(child)["values"]
-        CalculateBonus(param[0], param[3], param[4], param[5], param[6], path)
+    CalculateBonus()
+
+def GetVendorBonus(nombre, metaVenta, metaRecaudo, venta, recaudo):
+    bonus = database.get('Bonus/', str(nombre))
+    print(bonus)
+    if (bonus != 'none'):
+        data = str(bonus).split(',')
+        umbralRecaudo = float(data[0])/100
+        umbralVenta = float(data[1])
+        ventaMayor = float(data[2])/100
+        ventaMenor = float(data[3])/100
+        recaudoMenor= float(data[4])/100
+        umbral = float(recaudo/metaRecaudo)
+        if(umbral > umbralRecaudo):
+            if(venta > umbralVenta):
+                incentivo = float(ventaMayor*recaudo)
+            else:
+                incentivo = float(ventaMenor*recaudo)
+        else:
+            incentivo = float(recaudoMenor*recaudo)
+    else:
+        incentivo = 0
+    return incentivo
 
 def Load():
     Sales(1)
@@ -1304,7 +1020,6 @@ def FirebaseLoad(table):
                 database.delete(dname, guide)
                 print('Default record deleted')
     fecha = datetime.now().strftime("%d/%m/%Y")
-    entry4.insert(0, str(fecha))
 
 def LoadDataBase():
     loadYear = []
@@ -1323,7 +1038,6 @@ def ExportdataToExcel():
     export = []
     for _id in ids:
         row = ExpenseTree.item(_id)
-        print(row['values'])
         export.append(list(row['values']))
     export_df = pd.DataFrame(export)
     export_df.columns = ['Concepto', 'Total', 'Banco', 'Descripción', 'Fecha']
