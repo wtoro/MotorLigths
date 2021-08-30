@@ -743,10 +743,6 @@ def Bonus(meta, valor, min, max, tipo):
     max = float(max)/100
     valor = float(valor)
     meta = float(meta)
-    print("Venta " + str(valor))
-    print("Meta "+str(meta))
-    print("Min " + str(min))
-    print("Max " + str(max))
     if(tipo == 1):
         if(meta == 0):
             return False
