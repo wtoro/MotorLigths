@@ -560,6 +560,11 @@ def SelectedVendor(opt):
 
 def GetBonus():
     global val, bonusOne, bonusTwo, bonusThree, bonusFour, firstRange, string_variable
+    firstRange.delete(0, END)
+    bonusOne.delete(0, END)
+    bonusTwo.delete(0, END)
+    bonusThree.delete(0, END)
+    bonusFour.delete(0, END)
     bonus = database.get('Bonus/', str(string_variable.get()))
     if (bonus != 'none'):
         data = str(bonus).split(',')
@@ -626,7 +631,7 @@ def RangesGui():
     #ACTION FRAME
     insertBonus = Button(actionType, text = "Ingresar incentivos",  command = lambda : SalesBonusInsert(my_frame1, canvas))
     insertBonus.pack(anchor = W, padx = 2, pady= 2)
-    downloadBonus = Button(actionType, text = "Ver incentivos", state = DISABLED, command = lambda : GetBonus(my_frame1, canvas))
+    downloadBonus = Button(actionType, text = "Ver incentivos", state = DISABLED, command = lambda : GetBonus())
     downloadBonus.pack(anchor = W, padx = 2, pady = 2)
 
     top.mainloop()
